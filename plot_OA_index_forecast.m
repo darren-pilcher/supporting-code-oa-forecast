@@ -148,7 +148,6 @@ end
 % end
 
 
-
 % Loop through years and calculate average over designated months
 for t = 1:length(years)
         tmp_ind = isbetween(Hc.t,mon_start(t),mon_end(t));
@@ -179,6 +178,27 @@ end
 arag_index.EBS = squeeze(nansum(nansum(arag_area.EBS,2),1)) / nansum(nansum(tot_area.EBS)) * 100;
 pH_index.EBS = squeeze(nansum(nansum(pH_area.EBS,2),1)) / nansum(nansum(tot_area.EBS)) * 100;
 
+% Calculate stats
+stats.arag_R(:,:,1) = corrcoef(arag_shelf_mean,squeeze(nanmean(Fc.arag_shelf_mean(1,:,:),3)),'rows','complete');
+stats.arag_R(:,:,2) = corrcoef(arag_shelf_mean,squeeze(nanmean(Fc.arag_shelf_mean(2,:,:),3)),'rows','complete');
+stats.pH_R(:,:,1) = corrcoef(pH_shelf_mean,squeeze(nanmean(Fc.pH_shelf_mean(1,:,:),3)),'rows','complete');
+stats.pH_R(:,:,2) = corrcoef(pH_shelf_mean,squeeze(nanmean(Fc.pH_shelf_mean(2,:,:),3)),'rows','complete');
+
+stats.arag_index_R(:,:,1) = corrcoef(arag_index.EBS,squeeze(nanmean(Fc.arag(1,:,:),3)),'rows','complete');
+stats.arag_index_R(:,:,2) = corrcoef(arag_index.EBS,squeeze(nanmean(Fc.arag(2,:,:),3)),'rows','complete');
+stats.pH_index_R(:,:,1) = corrcoef(pH_index.EBS,squeeze(nanmean(Fc.pH(1,:,:),3)),'rows','complete');
+stats.pH_index_R(:,:,2) = corrcoef(pH_index.EBS,squeeze(nanmean(Fc.pH(2,:,:),3)),'rows','complete');
+
+stats.arag_RMSE(1) = sqrt(nanmean((arag_shelf_mean - squeeze(nanmean(Fc.arag_shelf_mean(1,:,:),3))').^2));
+stats.arag_RMSE(2) = sqrt(nanmean((arag_shelf_mean - squeeze(nanmean(Fc.arag_shelf_mean(2,:,:),3))').^2));
+stats.pH_RMSE(1) = sqrt(nanmean((pH_shelf_mean - squeeze(nanmean(Fc.pH_shelf_mean(1,:,:),3))').^2));
+stats.pH_RMSE(2) = sqrt(nanmean((pH_shelf_mean - squeeze(nanmean(Fc.pH_shelf_mean(2,:,:),3))').^2));
+
+stats.arag_index_RMSE(1) = sqrt(nanmean((arag_index.EBS - squeeze(nanmean(Fc.arag(1,:,:),3))').^2));
+stats.arag_index_RMSE(2) = sqrt(nanmean((arag_index.EBS - squeeze(nanmean(Fc.arag(2,:,:),3))').^2));
+stats.pH_index_RMSE(1) = sqrt(nanmean((pH_index.EBS - squeeze(nanmean(Fc.pH(1,:,:),3))').^2));
+stats.pH_index_RMSE(2) = sqrt(nanmean((pH_index.EBS - squeeze(nanmean(Fc.pH(2,:,:),3))').^2));
+
 % Plot Figures
 figure(1); set(gcf, 'units','centimeters','position',[10 10 21 11]); set(gcf,'Color',[1 1 1]);
 [p1] = plot(years,arag_index.EBS,'Color',[160/255 160/255 160/255],'Linewidth',2);
@@ -197,9 +217,10 @@ ylabel('% Bottom Water','Fontsize',18)
 xlabel('Year','Fontsize',18)
 title(['Apr Initialized Index Forecast'],'Fontsize',20)
 legend([p1,p2],'{\Omega}_{arag} < 1','pH < 7.8','Location','Northwest','Fontsize',14)
-
-%f = gcf;
-%exportgraphics(f,'/gscratch/cicoes/GR011909_oap/pilchd/Bering10k/figures/forecasts_jun2022/index_apr_forecast_1982-2010.pdf');
+text(1994,95,['R = ',num2str(stats.arag_index_R(1,2,1),'%#.2f')],'Color',[0 0.4470 0.7410],'Fontsize',14)
+text(2000,95,['RMSE = ',num2str(stats.arag_index_RMSE(1),'%#.1f')],'Color',[0 0.4470 0.7410],'Fontsize',14)
+text(1994,85,['R = ',num2str(stats.pH_index_R(1,2,1),'%#.2f')],'Color',[0.8500 0.3250 0.0980],'Fontsize',14)
+text(2000,85,['RMSE = ',num2str(stats.pH_index_RMSE(1),'%#.1f')],'Color',[0.8500 0.3250 0.0980],'Fontsize',14)
 
 figure(2); set(gcf, 'units','centimeters','position',[10 10 21 11]); set(gcf,'Color',[1 1 1]);
 [p1] = plot(years,arag_index.EBS,'Color',[160/255 160/255 160/255],'Linewidth',2);
@@ -218,9 +239,10 @@ ylabel('% Bottom Water','Fontsize',18)
 xlabel('Year','Fontsize',18)
 title(['May Initialized Index Forecast'],'Fontsize',20)
 legend([p1,p2],'{\Omega}_{arag} < 1','pH < 7.8','Location','Northwest','Fontsize',14)
-
-%f = gcf;
-%exportgraphics(f,'/gscratch/cicoes/GR011909_oap/pilchd/Bering10k/figures/forecasts_jun2022/index_may_forecast_1982-2010.pdf');
+text(1994,95,['R = ',num2str(stats.arag_index_R(1,2,2),'%#.2f')],'Color',[0 0.4470 0.7410],'Fontsize',14)
+text(2000,95,['RMSE = ',num2str(stats.arag_index_RMSE(2),'%#.1f')],'Color',[0 0.4470 0.7410],'Fontsize',14)
+text(1994,85,['R = ',num2str(stats.pH_index_R(1,2,2),'%#.2f')],'Color',[0.8500 0.3250 0.0980],'Fontsize',14)
+text(2000,85,['RMSE = ',num2str(stats.pH_index_RMSE(2),'%#.1f')],'Color',[0.8500 0.3250 0.0980],'Fontsize',14)
 
 figure(3); set(gcf, 'units','centimeters','position',[10 10 21 11]); set(gcf,'Color',[1 1 1]);
 yyaxis left
@@ -241,9 +263,11 @@ xlim([1981 2011])
 set(gca,'xtick',[1982:4:2010],'Fontsize',12)
 xlabel('Year','Fontsize',16)
 title(['Apr Initialized Bot Water Forecast'],'Fontsize',20)
+text(1994,8.04,['R = ',num2str(stats.arag_R(1,2,1),'%#.2f')],'Color',[0 0.4470 0.7410],'Fontsize',14)
+text(2000,8.04,['RMSE = ',num2str(stats.arag_RMSE(1),'%#.3f')],'Color',[0 0.4470 0.7410],'Fontsize',14)
+text(1994,7.86,['R = ',num2str(stats.pH_R(1,2,1),'%#.2f')],'Color',[0.8500 0.3250 0.0980],'Fontsize',14)
+text(2000,7.86,['RMSE = ',num2str(stats.pH_RMSE(1),'%#.3f')],'Color',[0.8500 0.3250 0.0980],'Fontsize',14)
 %legend([p1,p2],'{\Omega}_{arag} < 1','pH < 7.8','Location','Northwest','Fontsize',14)
-
-%export_fig('/gscratch/jisao/pilchd/Bering10k/figures/forecasts_jun2022/arag_pH_forecast_apr_1982-2010','-pdf')
 
 figure(4); set(gcf, 'units','centimeters','position',[10 10 21 11]); set(gcf,'Color',[1 1 1]);
 yyaxis left
@@ -264,9 +288,11 @@ xlim([1981 2011])
 set(gca,'xtick',[1982:4:2010],'Fontsize',12)
 xlabel('Year','Fontsize',16)
 title(['May Initialized Bot Water Forecast'],'Fontsize',20)
+text(1994,8.04,['R = ',num2str(stats.arag_R(1,2,2),'%#.2f')],'Color',[0 0.4470 0.7410],'Fontsize',14)
+text(2000,8.04,['RMSE = ',num2str(stats.arag_RMSE(2),'%#.3f')],'Color',[0 0.4470 0.7410],'Fontsize',14)
+text(1994,7.86,['R = ',num2str(stats.pH_R(1,2,2),'%#.2f')],'Color',[0.8500 0.3250 0.0980],'Fontsize',14)
+text(2000,7.86,['RMSE = ',num2str(stats.pH_RMSE(2),'%#.3f')],'Color',[0.8500 0.3250 0.0980],'Fontsize',14)
 %legend([p1,p2],'{\Omega}_{arag} < 1','pH < 7.8','Location','Northwest','Fontsize',14)
-
-%export_fig('/gscratch/jisao/pilchd/Bering10k/figures/forecasts_jun2022/arag_pH_forecast_may_1982-2010','-pdf')
 
 resid.arag(1,:) = squeeze(nanmean(Fc.arag_shelf_mean(1,:,:),3)) - arag_shelf_mean'; 
 resid.arag(2,:) = squeeze(nanmean(Fc.arag_shelf_mean(2,:,:),3)) - arag_shelf_mean';
@@ -284,8 +310,6 @@ set(gca,'xtick',[1982:4:2010],'Fontsize',12)
 title('Apr Forecast residuals','Fontsize',16)
 legend([p1,p2],['{\Omega}_{arag} avg = ',num2str(nanmean(resid.arag(1,:),2),2)],['pH avg = ',num2str(nanmean(resid.pH(1,:),2),2)]','Location','Southeast','Fontsize',14)
 
-%export_fig('/gscratch/jisao/pilchd/Bering10k/figures/forecasts_jun2022/arag_pH_forecast_apr_resid_1982-2010','-pdf')
-
 figure(6); set(gcf, 'units','centimeters','position',[10 10 21 11]); set(gcf,'Color',[1 1 1]);
 [p1] = plot(years,resid.arag(2,:),'.','Markersize',14);
 hold on
@@ -295,9 +319,4 @@ axis([1981 2011 -.09 .09])
 set(gca,'xtick',[1982:4:2010],'Fontsize',12)
 title('May Forecast residuals','Fontsize',16)
 legend([p1,p2],['{\Omega}_{arag} avg = ',num2str(nanmean(resid.arag(2,:),2),2)],['pH avg = ',num2str(nanmean(resid.pH(2,:),2),2)]','Location','Southeast','Fontsize',14)
-
-%export_fig('/gscratch/jisao/pilchd/Bering10k/figures/forecasts_jun2022/arag_pH_forecast_may_resid_1982-2010','-pdf')
-
-
-
 
