@@ -475,57 +475,47 @@ title('May Initialized pH Bot Forecasts','Fontsize',16)
 lgd = legend('Ens 1','Ens 2','Ens 3','Mean of Ens','Ens mean','Location','Southwest');
 lgd.Location = "south"; lgd.Orientation = "horizontal";
 
-%export_fig('/gscratch/cicoes/GR011909_oap/pilchd/Bering10k/figures/forecasts_jun2022/pH_bot_acctimeseries_allmembers','-png','tif','jpg')
-%f = gcf;
-%exportgraphics(f,'/gscratch/cicoes/GR011909_oap/pilchd/Bering10k/figures/forecasts_jun2022/test.pdf');
-
 figure(2); set(gcf, 'units','centimeters','position',[10 45 19 15]); set(gcf,'Color',[1 1 1]);
 subplot(2,1,1)
-plot(ACC.Fc_apr_ensmean,'k','Linewidth',2)
+plot(ACC.Fc_apr_ensmean,'b','Linewidth',2)
 hold on
-plot(ACC.Pc_apr,'Color',[192/255 192/255 192/255],'Linewidth',2)
+plot(ACC.Pc_apr,'Color','r','Linewidth',2)
 plot(ones(1,9)*0.5,'k--','Linewidth',1)
 tmp = ACC.Fc_apr_ensmean; tmp(~Fc.gt0_apr)=nan;
-plot(tmp,'k','Marker','o','MarkerFaceColor','k','LineStyle','none')
+plot(tmp,'b','Marker','o','MarkerFaceColor','b','LineStyle','none')
 tmp = ACC.Fc_apr_ensmean; tmp(Fc.gt0_apr)=nan;
-plot(tmp,'k','Marker','o','LineStyle','none')
+plot(tmp,'b','Marker','o','LineStyle','none')
 tmp = ACC.Pc_apr; tmp(~Pc.gt0_apr)=nan;
-plot(tmp,'Color',[192/255 192/255 192/255],'Marker','o','MarkerFaceColor',[192/255 192/255 192/255],'LineStyle','none')
+plot(tmp,'Color','r','Marker','o','MarkerFaceColor','r','LineStyle','none')
 tmp = ACC.Pc_apr; tmp(Pc.gt0_apr)=nan;
-plot(tmp,'Color',[192/255 192/255 192/255],'Marker','o','LineStyle','none')
+plot(tmp,'Color','r','Marker','o','LineStyle','none')
 % Plot forecast > persistence markers above forecast line
-tmp = ACC.Fc_apr_ensmean - 0.04; tmp(~Fc.pc5_apr) = nan;
-plot(tmp,'k','Marker','*','LineStyle','none')
+tmp = ACC.Fc_apr_ensmean - 0.08; tmp(~Fc.pc5_apr) = nan;
+plot(tmp,'b','Marker','*','LineStyle','none')
 axis([1 9 -.05 1])
 ylabel('ACC','Fontsize',14)
-%title(['April Init ',VAR,' ',depth,' Forecasts'],'Fontsize',16)
 title('April Initialized Bottom Water pH Forecasts','Fontsize',16)
 legend('Dynamic','Persistence','Location','Southeast')
 
 subplot(2,1,2)
-plot(ACC.Fc_may_ensmean,'k','Linewidth',2)
+plot(ACC.Fc_may_ensmean,'b','Linewidth',2)
 hold on
-plot(ACC.Pc_may,'Color',[192/255 192/255 192/255],'Linewidth',2)
+plot(ACC.Pc_may,'Color','r','Linewidth',2)
 plot(ones(1,9)*0.5,'k--','Linewidth',1)
 tmp = ACC.Fc_may_ensmean; tmp(~Fc.gt0_may)=nan;
-plot(tmp,'k','Marker','o','MarkerFaceColor','k','LineStyle','none')
+plot(tmp,'b','Marker','o','MarkerFaceColor','b','LineStyle','none')
 tmp = ACC.Fc_may_ensmean; tmp(Fc.gt0_may)=nan;
-plot(tmp,'k','Marker','o','LineStyle','none')
+plot(tmp,'b','Marker','o','LineStyle','none')
 tmp = ACC.Pc_may; tmp(~Pc.gt0_may)=nan;
-plot(tmp,'Color',[192/255 192/255 192/255],'Marker','o','MarkerFaceColor',[192/255 192/255 192/255],'LineStyle','none')
+plot(tmp,'Color','r','Marker','o','MarkerFaceColor','r','LineStyle','none')
 tmp = ACC.Pc_may; tmp(Pc.gt0_may)=nan;
-plot(tmp,'Color',[192/255 192/255 192/255],'Marker','o','LineStyle','none')
-tmp = ACC.Fc_may_ensmean - 0.04; tmp(~Fc.pc5_may) = nan;
-plot(tmp,'k','Marker','*','LineStyle','none')
+plot(tmp,'Color','r','Marker','o','LineStyle','none')
+tmp = ACC.Fc_may_ensmean - 0.08; tmp(~Fc.pc5_may) = nan;
+plot(tmp,'b','Marker','*','LineStyle','none')
 axis([1 9 -.05 1])
 ylabel('ACC','Fontsize',14)
-%title(['May Init ',VAR,' ',depth,' Forecasts'],'Fontsize',16)
 title('May Initialized Bottom Water pH Forecasts','Fontsize',16)
 legend('Dynamic','Persistence','Location','Southeast')
-
-%export_fig('/gscratch/cicoes/GR011909_oap/pilchd/Bering10k/figures/forecasts_jun2022/pH_surface_acc_ensmean_timeseries_sig','-pdf')
-%f = gcf;
-%exportgraphics(f,'/gscratch/cicoes/GR011909_oap/pilchd/Bering10k/figures/forecasts_jun2022/arag_bot_acc_ensmean_timeseries_sig_detrend.pdf')
 
 figure(3); set(gcf, 'units','centimeters','position',[10 10 19 11]); set(gcf,'Color',[1 1 1]);
 [p1] = plot(years,squeeze(nanmean(Hc.ebs_mon,1)),'k-o','Linewidth',2);
@@ -542,7 +532,4 @@ xlabel('Year','Fontsize',16)
 legend([p2],['Trend = ',num2str(trend(squeeze(nanmean(Hc.ebs_mon,1))),2)],'Location','Northeast')
 title('Bering Sea Shelf Annual Bottom Water pH','Fontsize',18)
 
-%export_fig('/gscratch/jisao/pilchd/Bering10k/figures/forecasts_jun2022/pH_surf_hindcast_trend','-pdf')
-%f = gcf;
-%exportgraphics(f,'/gscratch/cicoes/GR011909_oap/pilchd/Bering10k/figures/forecasts_jun2022/arag_bot_hindcast_trend.pdf')
 
